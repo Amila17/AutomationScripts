@@ -24,7 +24,7 @@ param(
 	[string]$AppPoolName,
 
 	[Parameter(Mandatory=$True)]
-	[ValidateSet('Start', 'Stop', 'Restart')]
+	[ValidateSet('Start', 'Stop', 'Restart', IgnoreCase=$True)]
 	[string]$IISAction
 )
 

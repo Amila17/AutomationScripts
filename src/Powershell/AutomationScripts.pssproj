@@ -28,6 +28,7 @@
   </PropertyGroup>
   <ItemGroup />
   <ItemGroup>
+    <Compile Include="Azure-VMManagement-Stop.ps1" />
     <Compile Include="ExecuteRundeckJob.ps1" />
     <Compile Include="IIS-ApplicationPoolManagement.ps1" />
     <Compile Include="Windows-ServiceManagement.ps1" />
