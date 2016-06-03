@@ -1,4 +1,9 @@
-﻿param([string]$username, [string]$password, [string]$runDeckUrl, [string]$groupName, [string]$jobName, [string]$environment)
+﻿param([string]$username = $OctopusParameters['username'], 
+[string]$password = $OctopusParameters['password'], 
+[string]$runDeckUrl = $OctopusParameters['runDeckUrl'], 
+[string]$groupName = $OctopusParameters['groupName'], 
+[string]$jobName = $OctopusParameters['jobName'], 
+[string]$environment = $OctopusParameters['environment'])
 
 $Global:sessionHolder = $null
 $Global:runDeckUrl = $runDeckUrl
@@ -67,13 +72,14 @@ function Make-Http-Get-Request([string]$url)
 
 	Try
 	{
-		$httpResponse = Invoke-WebRequest -Uri $url -Method Get -TimeoutSec 3 -Headers $headers -WebSession $Global:sessionHolder
+		$httpResponse = Invoke-WebRequest -Uri $url -Method Get -TimeoutSec 30 -Headers $headers -WebSession $Global:sessionHolder -UseBasicParsing
 		return $httpResponse
 	}
 	Catch [Exception]
 	{
 		$ex = $_.Exception.Message
-		Break
+        Write-Error -Message $ex
+		exit 2
 	}
 
 }
@@ -86,7 +92,7 @@ function Make-Http-Post-Request([string]$url, $body)
 
 		if([string]::IsNullOrEmpty($sessionHolder))
 		{
-			$httpResponse = Invoke-WebRequest -Uri $url -Method Post -TimeoutSec 3 -Headers $headers -Body $body -SessionVariable sessionHolder
+			$httpResponse = Invoke-WebRequest -Uri $url -Method Post -TimeoutSec 30 -Headers $headers -Body $body -SessionVariable sessionHolder -UseBasicParsing
 
 			if($httpResponse.StatusCode -eq "200")
 			{
@@ -96,13 +102,14 @@ function Make-Http-Post-Request([string]$url, $body)
 			return $httpResponse
 		}
 
-		$httpResponse = Invoke-WebRequest -Uri $url -Method Post -TimeoutSec 3 -Headers $headers -Body $body -WebSession $Global:sessionHolder
+		$httpResponse = Invoke-WebRequest -Uri $url -Method Post -TimeoutSec 30 -Headers $headers -Body $body -WebSession $Global:sessionHolder -UseBasicParsing
 		return $httpResponse
 	}
 	Catch [Exception]
 	{
 		$ex = $_.Exception.Message
-		Break
+        Write-Error -Message $ex
+		exit 2
 	}
 }
 
@@ -132,9 +139,6 @@ function Get-Request-Headers()
 	return $headers;
 }
 
-
 Authenticate-User $username $password
 $jobId = Get-RunDeck-Job-Id $groupName $jobName $environment
 Execute-RunDeck-Job $jobId
-
-
