@@ -45,28 +45,42 @@ function StopApplicationPool($state, [string]$appPoolName)
 }
 
 
-## Start of Script ##
+########################
+#   START OF SCRIPT    #
+########################
 
 Import-Module WebAdministration
 $state = Get-WebAppPoolState $appPoolName
 
-switch -Wildcard($IISAction)
+try
 {
-	Start
-	{ 
-		StartApplicationPool -state $state -appPoolName $AppPoolName; 
-		break 
-	}
-	Stop
-	{ 
-		StopApplicationPool -state $state -appPoolName $AppPoolName; 
-		break
-	}
-	Restart
-	{ 
-		StopApplicationPool -state $state -appPoolName $AppPoolName; 
-		StartApplicationPool -state $state -appPoolName $AppPoolName;
-		break
-	}
+	switch -Wildcard($IISAction)
+	{
+		Start
+		{ 
+			Write-Output("Starting application pool with name: $AppPoolName")
+			StartApplicationPool -state $state -appPoolName $AppPoolName; 
+			break 
+		}
+		Stop
+		{ 
+			Write-Output("Stopping application pool with name: $AppPoolName")
+			StopApplicationPool -state $state -appPoolName $AppPoolName; 
+			break
+		}
+		Restart
+		{ 
+			Write-Output("Restarting application pool with name: $AppPoolName")
+			StopApplicationPool -state $state -appPoolName $AppPoolName; 
+			StartApplicationPool -state $state -appPoolName $AppPoolName;
+			break
+		}
+	} 
+}
+catch [System.Exception]
+{
+    Write-Output ("Exception occured during execution of App Pool Management. " + $_.Exception.Message)
+	Write-Output ("Failed items. " + $_.Exception.ItemName)
+	Exit 2
 }
 

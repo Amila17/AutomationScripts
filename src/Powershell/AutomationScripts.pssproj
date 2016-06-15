@@ -28,9 +28,12 @@
   </PropertyGroup>
   <ItemGroup />
   <ItemGroup>
-    <Compile Include="Azure-VMManagement-Stop.ps1" />
+    <Compile Include="ActiveDirectory-DeleteComputerObject.ps1" />
+    <Compile Include="Azure-VMManagement.ps1" />
     <Compile Include="ExecuteRundeckJob.ps1" />
     <Compile Include="IIS-ApplicationPoolManagement.ps1" />
+    <Compile Include="OD-MachineManagement.ps1" />
+    <Compile Include="Windows-FileCreation.ps1" />
     <Compile Include="Windows-ServiceManagement.ps1" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
