@@ -33,6 +33,7 @@
     <Compile Include="ExecuteRundeckJob.ps1" />
     <Compile Include="IIS-ApplicationPoolManagement.ps1" />
     <Compile Include="OD-MachineManagement.ps1" />
+    <Compile Include="SQL-DBAutomationScript.ps1" />
     <Compile Include="Windows-FileCreation.ps1" />
     <Compile Include="Windows-ServiceManagement.ps1" />
   </ItemGroup>
